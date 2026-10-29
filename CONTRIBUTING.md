@@ -4,7 +4,7 @@ Cargo Rocket is a small Rust service. Keep changes focused on the upload flow, s
 
 ## Local setup
 
-Use Linux with Rust 1.89 or newer, a C compiler, and Node.js 22+ for JavaScript checks/examples. OpenSSH is needed only for SFTP storage. SQLite is bundled by the Rust dependency.
+Use Linux with Rust 1.89 or newer, a C compiler, and Node.js 22+ for JavaScript checks/examples. Release tooling tests also require Python 3.11+. OpenSSH is needed only for SFTP storage. SQLite is bundled by the Rust dependency.
 
 ```sh
 export HOST_URL="http://localhost:3000/"
@@ -25,6 +25,7 @@ cargo test --locked
 node --check static/dashboard.js
 node --check examples/upload.mjs
 bash -n scripts/smoke-test.sh
+python3 -m unittest discover -s scripts -p 'test_*.py'
 ```
 
 Tests use temporary SQLite databases and real temporary local folders, with no cloud credentials. Add behavior-level integration coverage for changes to authorization, upload claims, size enforcement, or persistence. Remote adapters require a manual connection test against an environment you control.
@@ -49,3 +50,5 @@ For a running local instance with a configured project, `PROJECT_KEY=... scripts
 Explain the behavior being changed, why it is needed, and how you verified it. Keep public API changes documented and preserve project isolation. Do not commit database files, uploaded content, credentials, private keys, or environment secrets. Avoid unrelated formatting and dependency changes.
 
 Contributions are licensed under the repository's MIT license.
+
+See the [release process](docs/releases.md) for versioning and publishing binaries.

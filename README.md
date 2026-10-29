@@ -28,6 +28,10 @@ sequenceDiagram
 
 Uploads pass through Cargo Rocket, so every backend uses the same flow. This is an **S3-style upload flow**, not an S3 protocol implementation or AWS SDK endpoint.
 
+## Prebuilt binaries
+
+Tagged releases provide Linux x64/ARM64 and macOS Intel/Apple Silicon binaries, with SHA-256 checksums. Download from [GitHub Releases](https://github.com/1338/cargo-rocket/releases) and follow the [binary installation guide](docs/binaries.md). Until the first version tag is published, use source or Docker below. No Rust toolchain is needed to run a prebuilt binary.
+
 ## Quick start
 
 Requires Rust 1.89+, a C compiler, and OpenSSL's command-line tool to generate a secret. SSH storage also requires an OpenSSH client. Linux is the tested platform.
@@ -98,6 +102,8 @@ The Content-Type and byte count must match the request. Upload URLs expire after
 |---|---|
 | [API reference](docs/api.md) | Authentication, requests, responses, statuses, and administration |
 | [Storage backends](docs/storage.md) | Local disk, S3, Azure, FTP/FTPS, and SSH/SFTP configuration |
+| [Binary installation](docs/binaries.md) | Download, verify, run, and upgrade a prebuilt executable |
+| [Release process](docs/releases.md) | Version tags, build targets, publication, and retries |
 | [Deployment](docs/deployment.md) | Environment variables, Docker, HTTPS, CORS, backups, and operational limits |
 | [Architecture](docs/architecture.md) | Upload lifecycle, persistence, isolation, and design decisions |
 | [Contributing](CONTRIBUTING.md) | Local development, checks, and project layout |
