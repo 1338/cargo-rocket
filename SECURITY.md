@@ -1,6 +1,6 @@
 # Security
 
-Rocket Cargo is early-stage software. Its current security boundary separates trusted operators, project API keys, and single-use upload grants. It is not a replacement for application-level user authorization or a malware scanning service.
+Cargo Rocket is early-stage software. Its current security boundary separates trusted operators, project API keys, and single-use upload grants. It is not a replacement for application-level user authorization or a malware scanning service.
 
 ## Reporting a vulnerability
 

@@ -1,4 +1,4 @@
-use rocket_cargo::{app, AppState};
+use cargo_rocket::{app, AppState};
 
 #[tokio::main]
 async fn main() -> anyhow::Result<()> {
@@ -25,7 +25,7 @@ async fn main() -> anyhow::Result<()> {
         std::env::var("BIND_ADDR").unwrap_or_else(|_| "127.0.0.1:3000".into()),
     )
     .await?;
-    tracing::info!(address = %listener.local_addr()?, "rocket-cargo listening");
+    tracing::info!(address = %listener.local_addr()?, "cargo-rocket listening");
     axum::serve(listener, app(state))
         .with_graceful_shutdown(async {
             let _ = tokio::signal::ctrl_c().await;

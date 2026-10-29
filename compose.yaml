@@ -1,5 +1,5 @@
 services:
-  rocket-cargo:
+  cargo-rocket:
     build: .
     ports:
       - "127.0.0.1:3000:3000"
@@ -7,7 +7,7 @@ services:
       ADMIN_TOKEN: ${ADMIN_TOKEN:?Set ADMIN_TOKEN to a random secret of at least 32 characters}
       PUBLIC_BASE_URL: ${PUBLIC_BASE_URL:-http://localhost:3000}
       CORS_ORIGINS: ${CORS_ORIGINS:-}
-      RUST_LOG: rocket_cargo=info
+      RUST_LOG: cargo_rocket=info
     volumes:
       - uploads:/data
     restart: unless-stopped

@@ -1,6 +1,6 @@
 # Contributing
 
-Rocket Cargo is a small Rust service. Keep changes focused on the upload flow, storage configuration, or the operation of that service.
+Cargo Rocket is a small Rust service. Keep changes focused on the upload flow, storage configuration, or the operation of that service.
 
 ## Local setup
 

@@ -1,12 +1,12 @@
-# Rocket Cargo
+# Cargo Rocket
 
 **One upload API. Your choice of storage.**
 
-[![CI](https://github.com/1338/rocket-cargo/actions/workflows/ci.yml/badge.svg)](https://github.com/1338/rocket-cargo/actions/workflows/ci.yml)
+[![CI](https://github.com/1338/cargo-rocket/actions/workflows/ci.yml/badge.svg)](https://github.com/1338/cargo-rocket/actions/workflows/ci.yml)
 [![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 [![Rust 1.89+](https://img.shields.io/badge/rust-1.89%2B-orange.svg)](Cargo.toml)
 
-Rocket Cargo is a small, self-hosted Rust service for sharing upload infrastructure across projects. Request a short-lived upload URL, PUT a file to it, and let the service write it to your configured storage.
+Cargo Rocket is a small, self-hosted Rust service for sharing upload infrastructure across projects. Request a short-lived upload URL, PUT a file to it, and let the service write it to your configured storage.
 
 Use a local folder, S3-compatible bucket, Azure Blob container, FTP server, or directory over SSH. Each project gets its own API key, file namespace, and upload limits. A built-in dashboard manages connections and project keys.
 
@@ -16,7 +16,7 @@ There is one binary, one SQLite database, and no frontend build step.
 sequenceDiagram
     participant App as Application server
     participant Client as Uploading client
-    participant Cargo as Rocket Cargo
+    participant Cargo as Cargo Rocket
     participant Storage as Configured storage
     App->>Cargo: POST /api/uploads (project key, metadata)
     Cargo-->>App: Single-use upload URL
@@ -26,21 +26,21 @@ sequenceDiagram
     Cargo-->>Client: File ID and completion status
 ```
 
-Uploads pass through Rocket Cargo, so every backend uses the same flow. This is an **S3-style upload flow**, not an S3 protocol implementation or AWS SDK endpoint.
+Uploads pass through Cargo Rocket, so every backend uses the same flow. This is an **S3-style upload flow**, not an S3 protocol implementation or AWS SDK endpoint.
 
 ## Quick start
 
 Requires Rust 1.89+, a C compiler, and OpenSSL's command-line tool to generate a secret. SSH storage also requires an OpenSSH client. Linux is the tested platform.
 
 ```sh
-git clone https://github.com/1338/rocket-cargo.git
-cd rocket-cargo
+git clone https://github.com/1338/cargo-rocket.git
+cd cargo-rocket
 export ADMIN_TOKEN="$(openssl rand -hex 32)"
 cargo run --locked
 ```
 
 1. Open **http://localhost:3000** and enter the value of `ADMIN_TOKEN`.
-2. Add a **Local disk / folder** connection with an absolute writable path, such as `/tmp/rocket-cargo-files`. Use **Test** to check write, read, and delete access.
+2. Add a **Local disk / folder** connection with an absolute writable path, such as `/tmp/cargo-rocket-files`. Use **Test** to check write, read, and delete access.
 3. Create a project using that connection. Save its API key; it is shown only once.
 4. Upload a file using the example below.
 
@@ -99,7 +99,7 @@ The Content-Type and byte count must match the request. Upload URLs expire after
 
 ## Scope
 
-Rocket Cargo is intended for small deployments that want a reusable upload service without running a larger storage platform. The current release supports a single service instance per SQLite database, 16 simultaneous uploads, and a five-minute transfer timeout. Size limits and allowed MIME declarations are configured per project.
+Cargo Rocket is intended for small deployments that want a reusable upload service without running a larger storage platform. The current release supports a single service instance per SQLite database, 16 simultaneous uploads, and a five-minute transfer timeout. Size limits and allowed MIME declarations are configured per project.
 
 It does not currently provide resumable client uploads, object deletion, storage migration, retention jobs, malware scanning, or per-project total storage quotas. MIME types are declarations, not content inspection. Remote backends use OpenDAL; live connectivity must be checked with your credentials. See the [operational notes](docs/deployment.md) before exposing an instance.
 

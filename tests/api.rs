@@ -3,8 +3,8 @@ use axum::{
     http::{Request, StatusCode},
     Router,
 };
+use cargo_rocket::{app, AppState};
 use http_body_util::BodyExt;
-use rocket_cargo::{app, AppState};
 use serde_json::{json, Value};
 use tower::ServiceExt;
 

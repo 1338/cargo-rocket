@@ -9,7 +9,7 @@
 | `PUBLIC_BASE_URL` | `http://localhost:3000` | External URL used to generate upload/file URLs |
 | `DATABASE_PATH` | `data/upload-tool.db` | SQLite database |
 | `CORS_ORIGINS` | No cross-origin access | Comma-separated allowed browser origins |
-| `RUST_LOG` | Unset | Log filter, e.g. `rocket_cargo=info` |
+| `RUST_LOG` | Unset | Log filter, e.g. `cargo_rocket=info` |
 
 Use HTTPS through a reverse proxy for an exposed instance; set `PUBLIC_BASE_URL` to its external HTTPS URL. Keep project keys on application servers; browsers only need the issued upload URL. Configure the proxy for raw streaming uploads, an appropriate body size, and a timeout of at least five minutes. Avoid logging query strings: upload URLs contain bearer credentials.
 

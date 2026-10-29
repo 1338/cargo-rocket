@@ -1,12 +1,12 @@
 [package]
-name = "rocket-cargo"
+name = "cargo-rocket"
 version = "0.1.0"
 edition = "2021"
 rust-version = "1.89"
 description = "A small, self-hosted upload service with an S3-style flow and pluggable storage."
 authors = ["Max van der Sluis <maxvandersluis@yahoo.com>"]
 license = "MIT"
-repository = "https://github.com/1338/rocket-cargo"
+repository = "https://github.com/1338/cargo-rocket"
 readme = "README.md"
 keywords = ["upload", "storage", "s3", "self-hosted", "axum"]
 categories = ["web-programming::http-server", "filesystem"]

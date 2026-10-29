@@ -7,7 +7,7 @@ Add connections in the dashboard, or POST the same JSON to `/api/admin/backends`
 ## Local disk
 
 ```json
-{"name":"Local uploads","kind":"fs","options":{"root":"/srv/rocket-cargo/files"}}
+{"name":"Local uploads","kind":"fs","options":{"root":"/srv/cargo-rocket/files"}}
 ```
 
 ## AWS S3 / compatible

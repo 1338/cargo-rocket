@@ -2,7 +2,7 @@
 
 [← README](../README.md)
 
-Rocket Cargo keeps storage concerns out of individual applications. Applications own their users and authorization decisions; Rocket Cargo owns upload grants, byte transfer, and the mapping from a project to its storage connection.
+Cargo Rocket keeps storage concerns out of individual applications. Applications own their users and authorization decisions; Cargo Rocket owns upload grants, byte transfer, and the mapping from a project to its storage connection.
 
 ## Components
 

@@ -1,4 +1,4 @@
-//! Rocket Cargo's HTTP API, storage adapters, and persistent upload grants.
+//! Cargo Rocket's HTTP API, storage adapters, and persistent upload grants.
 //!
 //! The binary provides configuration and process lifecycle; [`app`] assembles
 //! the service around an [`AppState`] backed by SQLite.
@@ -331,11 +331,11 @@ async fn test_backend(
 ) -> Result<Json<Value>> {
     s.admin(&headers)?;
     let op = s.backend(&id)?.operator()?;
-    let key = format!(".rocket-cargo-probe/{}", self::id());
+    let key = format!(".cargo-rocket-probe/{}", self::id());
     let result = tokio::time::timeout(Duration::from_secs(20), async {
-        op.write(&key, "rocket-cargo connection test").await?;
+        op.write(&key, "cargo-rocket connection test").await?;
         let data = op.read(&key).await?;
-        if data.to_bytes().as_ref() != b"rocket-cargo connection test" {
+        if data.to_bytes().as_ref() != b"cargo-rocket connection test" {
             return Err(opendal::Error::new(
                 opendal::ErrorKind::Unexpected,
                 "Read-back mismatch",
