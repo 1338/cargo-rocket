@@ -7,11 +7,12 @@ Cargo Rocket is a small Rust service. Keep changes focused on the upload flow, s
 Use Linux with Rust 1.89 or newer, a C compiler, and Node.js 22+ for JavaScript checks/examples. OpenSSH is needed only for SFTP storage. SQLite is bundled by the Rust dependency.
 
 ```sh
+export HOST_URL="http://localhost:3000/"
 export ADMIN_TOKEN="$(openssl rand -hex 32)"
 cargo run --locked
 ```
 
-The server listens at http://localhost:3000. `cargo run` does not load `.env` automatically. HTML and JavaScript are embedded at compile time; restart the process after changing dashboard assets.
+The server listens at the hostname and port in `HOST_URL`. `cargo run` does not load `.env` automatically. HTML and JavaScript are embedded at compile time; restart the process after changing dashboard assets.
 
 If Cargo reports `unknown proxy name` inside an AppImage terminal using zsh, run `unset ARGV0` in that terminal before invoking Cargo.
 
@@ -35,6 +36,7 @@ For a running local instance with a configured project, `PROJECT_KEY=... scripts
 | Path | Purpose |
 |---|---|
 | `src/main.rs` | Process configuration, listener, and shutdown |
+| `src/config.rs` | Host URL validation and listener/public URL resolution |
 | `src/lib.rs` | Router, persistence, authentication, backend adapters, and transfer lifecycle |
 | `static/` | Embedded dashboard without a build step |
 | `tests/api.rs` | API integration tests |

@@ -35,18 +35,22 @@ Requires Rust 1.89+, a C compiler, and OpenSSL's command-line tool to generate a
 ```sh
 git clone https://github.com/1338/cargo-rocket.git
 cd cargo-rocket
+export HOST_URL="http://localhost:3000/"
 export ADMIN_TOKEN="$(openssl rand -hex 32)"
 cargo run --locked
 ```
 
-1. Open **http://localhost:3000** and enter the value of `ADMIN_TOKEN`.
+1. Open the URL in `HOST_URL` and enter the value of `ADMIN_TOKEN`.
 2. Add a **Local disk / folder** connection with an absolute writable path, such as `/tmp/cargo-rocket-files`. Use **Test** to check write, read, and delete access.
 3. Create a project using that connection. Save its API key; it is shown only once.
 4. Upload a file using the example below.
 
+`HOST_URL` sets the listening hostname/port and the base URL used in upload links. Change it to `http://localhost:8080/` to run on port 8080. A DNS hostname must already resolve to an address on the server; this setting does not create a DNS record. For HTTPS behind a proxy, see [deployment](docs/deployment.md).
+
 For Docker:
 
 ```sh
+export HOST_URL="http://localhost:3000/"
 export ADMIN_TOKEN="$(openssl rand -hex 32)"
 docker compose up --build
 ```
@@ -59,11 +63,13 @@ This runnable example requires `curl` and `jq`. Use your **project key**, not th
 
 ```sh
 export PROJECT_KEY='your-project-api-key'
+base_url="${HOST_URL:-http://localhost:3000}"
+base_url="${base_url%/}"
 printf 'hello' > /tmp/hello.txt
 
 # 1. Request an upload URL for exactly five bytes.
 ticket=$(curl --fail-with-body --silent --show-error \
-  http://localhost:3000/api/uploads \
+  "$base_url/api/uploads" \
   -H "Authorization: Bearer $PROJECT_KEY" \
   -H 'Content-Type: application/json' \
   -d '{"filename":"hello.txt","content_type":"text/plain","size":5}')
@@ -78,7 +84,7 @@ curl --fail-with-body --silent --show-error -X PUT "$upload_url" \
 
 # Download with the owning project's API key.
 curl --fail-with-body --silent --show-error \
-  "http://localhost:3000/api/files/$file_id/content" \
+  "$base_url/api/files/$file_id/content" \
   -H "Authorization: Bearer $PROJECT_KEY" -o /tmp/downloaded.txt
 
 cmp /tmp/hello.txt /tmp/downloaded.txt

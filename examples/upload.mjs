@@ -1,7 +1,7 @@
 /**
  * Server-side Node.js 22+ example, with no external dependencies.
  * PROJECT_KEY=... node examples/upload.mjs ./photo.png image/png
- * Optional: CARGO_BASE_URL=https://cargo.example.com
+ * Optional: HOST_URL=https://cargo.example.com (CARGO_BASE_URL also supported)
  * Keep the project key on your application server, never in browser code.
  */
 import { open, stat } from "node:fs/promises";
@@ -9,10 +9,11 @@ import { basename } from "node:path";
 
 const [path, contentType = "application/octet-stream"] = process.argv.slice(2);
 const key = process.env.PROJECT_KEY;
-const base = (process.env.CARGO_BASE_URL || "http://localhost:3000").replace(
-  /\/$/,
-  "",
-);
+const base = (
+  process.env.CARGO_BASE_URL ||
+  process.env.HOST_URL ||
+  "http://localhost:3000"
+).replace(/\/$/, "");
 if (!path || !key) {
   console.error(
     "Usage: PROJECT_KEY=... node examples/upload.mjs <file> [content-type]",

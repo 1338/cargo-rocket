@@ -2,7 +2,7 @@
 # Verify an existing project's upload flow over HTTP. Requires curl and jq.
 set -euo pipefail
 : "${PROJECT_KEY:?Set PROJECT_KEY to an existing project API key}"
-base="${CARGO_BASE_URL:-http://localhost:3000}"
+base="${CARGO_BASE_URL:-${HOST_URL:-http://localhost:3000}}"
 base="${base%/}"
 for command in curl jq cmp; do
   command -v "$command" >/dev/null || { printf 'Missing required command: %s\n' "$command" >&2; exit 1; }

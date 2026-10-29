@@ -2,10 +2,11 @@ services:
   cargo-rocket:
     build: .
     ports:
-      - "127.0.0.1:3000:3000"
+      - "127.0.0.1:${HOST_PORT:-3000}:3000"
     environment:
       ADMIN_TOKEN: ${ADMIN_TOKEN:?Set ADMIN_TOKEN to a random secret of at least 32 characters}
-      PUBLIC_BASE_URL: ${PUBLIC_BASE_URL:-http://localhost:3000}
+      HOST_URL: ${HOST_URL:-http://localhost:3000}
+      PUBLIC_BASE_URL: ${PUBLIC_BASE_URL:-${HOST_URL:-http://localhost:3000}}
       CORS_ORIGINS: ${CORS_ORIGINS:-}
       RUST_LOG: cargo_rocket=info
     volumes:
