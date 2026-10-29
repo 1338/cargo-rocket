@@ -1,0 +1,757 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Rocket Cargo · Storage console</title>
+    <style>
+      :root {
+        font-family:
+          Inter,
+          ui-sans-serif,
+          system-ui,
+          -apple-system,
+          sans-serif;
+        color: #24332d;
+        background: #f6f8f5;
+        font-size: 14px;
+      }
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        margin: 0;
+      }
+      button,
+      input,
+      select,
+      textarea {
+        font: inherit;
+      }
+      button {
+        cursor: pointer;
+      }
+      button:disabled {
+        opacity: 0.5;
+        cursor: wait;
+      }
+      button,
+      a,
+      input,
+      select,
+      textarea {
+        outline-offset: 4px;
+      }
+      header {
+        height: 76px;
+        background: #fff;
+        border-bottom: 1px solid #e0e6df;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 0 5vw;
+      }
+      .brand {
+        font-size: 20px;
+        font-weight: 750;
+        letter-spacing: -0.7px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+      .logo {
+        display: grid;
+        place-items: center;
+        background: #224c39;
+        color: #d7f3b5;
+        width: 32px;
+        height: 32px;
+        border-radius: 9px;
+        font-size: 22px;
+      }
+      .muted {
+        color: #738178;
+      }
+      .tag {
+        font-size: 11px;
+        text-transform: uppercase;
+        letter-spacing: 1.4px;
+        color: #758376;
+        margin-left: 15px;
+        font-weight: 500;
+      }
+      .shell {
+        max-width: 1250px;
+        margin: auto;
+        padding: 42px 32px;
+      }
+      h1 {
+        font-size: 32px;
+        letter-spacing: -1.2px;
+        font-weight: 650;
+        margin: 0 0 10px;
+      }
+      h2 {
+        font-size: 17px;
+        margin: 0;
+        letter-spacing: -0.3px;
+      }
+      p {
+        line-height: 1.65;
+      }
+      .intro {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 30px;
+      }
+      .eyebrow {
+        font-size: 11px;
+        letter-spacing: 1.8px;
+        text-transform: uppercase;
+        color: #6a7e6e;
+        margin-bottom: 12px;
+      }
+      .status {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-size: 12px;
+        color: #5b7060;
+      }
+      .dot {
+        width: 7px;
+        height: 7px;
+        background: #609d47;
+        border-radius: 50%;
+      }
+      nav {
+        display: flex;
+        gap: 24px;
+        border-bottom: 1px solid #dce3d9;
+        margin-bottom: 26px;
+      }
+      nav button {
+        border: 0;
+        background: none;
+        color: #748074;
+        padding: 14px 0;
+        border-bottom: 2px solid transparent;
+      }
+      nav button[aria-selected="true"] {
+        border-color: #2b5a3d;
+        color: #254b35;
+        font-weight: 650;
+      }
+      .grid {
+        display: grid;
+        grid-template-columns: 1fr 360px;
+        gap: 24px;
+        align-items: start;
+      }
+      .card {
+        background: #fff;
+        border: 1px solid #dfe5dc;
+        border-radius: 12px;
+        overflow: hidden;
+      }
+      .card-head {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        padding: 22px 24px;
+        border-bottom: 1px solid #edf0ea;
+      }
+      .card-body {
+        padding: 24px;
+      }
+      .count {
+        font-size: 12px;
+        border: 1px solid #e0e6dd;
+        border-radius: 5px;
+        padding: 3px 7px;
+        color: #71816f;
+      }
+      .empty {
+        text-align: center;
+        padding: 65px 24px;
+        color: #7f8b7d;
+      }
+      .empty strong {
+        display: block;
+        color: #3c503e;
+        margin: 13px 0 7px;
+        font-weight: 550;
+      }
+      .empty-icon {
+        font-size: 27px;
+        color: #8ba080;
+      }
+      .btn {
+        border: 1px solid #d8e0d4;
+        border-radius: 7px;
+        background: white;
+        padding: 9px 14px;
+        color: #354b38;
+        font-weight: 550;
+      }
+      .btn.primary {
+        background: #294f39;
+        color: #fff;
+        border-color: #294f39;
+      }
+      .btn.primary:hover {
+        background: #193e29;
+      }
+      .btn.small {
+        padding: 6px 10px;
+        font-size: 12px;
+      }
+      .btn.full {
+        width: 100%;
+        margin-top: 8px;
+      }
+      label {
+        display: block;
+        font-size: 12px;
+        font-weight: 600;
+        margin-bottom: 7px;
+      }
+      input,
+      select,
+      textarea {
+        width: 100%;
+        border: 1px solid #d9e1d5;
+        border-radius: 6px;
+        padding: 10px 11px;
+        background: #fff;
+        color: #2c3f2d;
+      }
+      input:focus,
+      select:focus,
+      textarea:focus {
+        border-color: #6b8d58;
+      }
+      textarea {
+        resize: vertical;
+        min-height: 72px;
+      }
+      .field {
+        margin-bottom: 18px;
+      }
+      .hint {
+        color: #83907f;
+        font-size: 11px;
+        line-height: 1.6;
+        margin: 7px 0 0;
+      }
+      .note {
+        background: #eef4e9;
+        border: 1px solid #dae6d1;
+        border-radius: 8px;
+        padding: 15px 18px;
+        color: #596f4e;
+        font-size: 12px;
+        line-height: 1.7;
+        margin-top: 20px;
+      }
+      .row {
+        padding: 20px 24px;
+        border-bottom: 1px solid #edf0ea;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+      }
+      .row:last-child {
+        border-bottom: 0;
+      }
+      .row-title {
+        font-weight: 600;
+        margin-bottom: 5px;
+      }
+      .row-sub {
+        font-size: 12px;
+        color: #85907f;
+        overflow-wrap: anywhere;
+      }
+      .backend-icon {
+        width: 38px;
+        height: 38px;
+        display: grid;
+        place-items: center;
+        background: #eff4eb;
+        border: 1px solid #e2eadc;
+        border-radius: 9px;
+        color: #5f7b51;
+        font-size: 17px;
+        flex-shrink: 0;
+      }
+      .row-info {
+        display: flex;
+        gap: 13px;
+        align-items: center;
+        min-width: 0;
+      }
+      .badge {
+        display: inline-block;
+        background: #eff5e9;
+        color: #5c7c46;
+        border-radius: 4px;
+        font-size: 10px;
+        font-weight: 650;
+        padding: 4px 7px;
+        text-transform: uppercase;
+        letter-spacing: 0.6px;
+      }
+      .badge.failed,
+      .badge.expired {
+        background: #f9eee8;
+        color: #a4684d;
+      }
+      .badge.pending,
+      .badge.uploading {
+        background: #f7f3e5;
+        color: #9c8651;
+      }
+      .table-wrap {
+        overflow: auto;
+      }
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 12px;
+      }
+      th {
+        text-align: left;
+        color: #89947e;
+        font-size: 10px;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        padding: 15px 24px;
+        background: #fafbf8;
+        font-weight: 550;
+      }
+      td {
+        padding: 17px 24px;
+        border-top: 1px solid #edf0e9;
+        white-space: nowrap;
+      }
+      td.filename {
+        white-space: normal;
+        min-width: 180px;
+        overflow-wrap: anywhere;
+      }
+      pre {
+        margin: 0;
+        white-space: pre-wrap;
+        overflow-wrap: anywhere;
+        font-size: 12px;
+        line-height: 1.8;
+        color: #d4e7cb;
+        background: #24372c;
+        padding: 24px;
+        border-radius: 9px;
+      }
+      code {
+        font-family: ui-monospace, SFMono-Regular, monospace;
+        font-size: 12px;
+      }
+      .steps {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 22px;
+      }
+      .step-label {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        margin-bottom: 14px;
+      }
+      .step-number {
+        background: #e7eedf;
+        color: #5b7947;
+        border-radius: 50%;
+        width: 24px;
+        height: 24px;
+        display: grid;
+        place-items: center;
+        font-size: 11px;
+      }
+      .login {
+        max-width: 420px;
+        margin: 10vh auto;
+        padding: 30px;
+      }
+      .login h1 {
+        font-size: 25px;
+      }
+      .login p {
+        font-size: 13px;
+        color: #73836d;
+      }
+      .hidden,
+      [hidden] {
+        display: none !important;
+      }
+      #notice {
+        position: fixed;
+        bottom: 25px;
+        left: 50%;
+        transform: translateX(-50%);
+        max-width: 90vw;
+        background: #263d2e;
+        color: white;
+        border-radius: 8px;
+        padding: 14px 23px;
+        box-shadow: 0 5px 25px #0002;
+        z-index: 5;
+        font-size: 13px;
+      }
+      #notice.error {
+        background: #7c3e32;
+      }
+      dialog {
+        border: 1px solid #dce4d6;
+        border-radius: 12px;
+        width: 510px;
+        max-width: 90vw;
+        padding: 28px;
+        color: #2c432f;
+      }
+      dialog::backdrop {
+        background: #18291d77;
+      }
+      dialog code {
+        display: block;
+        word-break: break-all;
+        background: #eff4ea;
+        padding: 16px;
+        border-radius: 6px;
+        margin: 20px 0;
+      }
+      .dialog-actions {
+        display: flex;
+        justify-content: flex-end;
+        gap: 10px;
+      }
+      .footer {
+        display: flex;
+        justify-content: space-between;
+        color: #8d9986;
+        font-size: 11px;
+        margin-top: 35px;
+        border-top: 1px solid #e1e7dc;
+        padding-top: 18px;
+      }
+      .inline {
+        display: flex;
+        gap: 10px;
+        align-items: center;
+      }
+      .sr-only {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        overflow: hidden;
+        clip: rect(0, 0, 0, 0);
+      }
+      @media (max-width: 850px) {
+        .grid,
+        .steps {
+          grid-template-columns: 1fr;
+        }
+        .shell {
+          padding: 28px 18px;
+        }
+        .intro {
+          align-items: start;
+        }
+        .status {
+          display: none;
+        }
+        .tag {
+          display: none;
+        }
+        header {
+          padding: 0 20px;
+        }
+        .card-head,
+        .row,
+        .card-body {
+          padding: 19px;
+        }
+        h1 {
+          font-size: 27px;
+        }
+        nav {
+          gap: 20px;
+        }
+      }
+    </style>
+    <script src="/dashboard.js" defer></script>
+  </head>
+  <body>
+    <header>
+      <div class="brand">
+        <span class="logo" aria-hidden="true">↥</span>rocket cargo<span
+          class="tag"
+          >Storage console</span
+        >
+      </div>
+      <button id="logout" class="btn small" hidden>Lock console</button>
+    </header>
+    <section id="login" class="card login">
+      <div class="eyebrow">Your storage, one API</div>
+      <h1>Open your console</h1>
+      <p>
+        Connect storage, create project keys, and keep an eye on your uploads.
+      </p>
+      <form id="login-form">
+        <div class="field">
+          <label for="admin-token">Admin token</label
+          ><input
+            id="admin-token"
+            type="password"
+            required
+            autocomplete="current-password"
+            placeholder="Enter your ADMIN_TOKEN"
+          />
+        </div>
+        <button class="btn primary full">Unlock console →</button>
+      </form>
+      <p class="hint">
+        Your token stays in memory for this tab. Reloading locks the console.
+      </p>
+    </section>
+    <main id="console" class="shell" hidden>
+      <div class="intro">
+        <div>
+          <div class="eyebrow">Infrastructure / Overview</div>
+          <h1>A home for every upload.</h1>
+          <div class="muted">
+            One simple API. Whichever storage works for you.
+          </div>
+        </div>
+        <div class="status">
+          <span class="dot"></span>Connected to your instance
+        </div>
+      </div>
+      <nav aria-label="Console sections">
+        <button data-tab="storage" aria-selected="true">Storage</button
+        ><button data-tab="projects" aria-selected="false">Projects</button
+        ><button data-tab="uploads" aria-selected="false">Uploads</button
+        ><button data-tab="guide" aria-selected="false">API guide</button>
+      </nav>
+      <section id="storage" class="tab">
+        <div class="grid">
+          <div>
+            <div class="card">
+              <div class="card-head">
+                <h2>Storage connections</h2>
+                <span id="backend-count" class="count">0 connections</span>
+              </div>
+              <div id="backend-list"></div>
+            </div>
+            <div class="note">
+              Connections are fixed once created, so existing files always point
+              to the same storage. Add a new connection for a different
+              destination.
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-head"><h2>Add a connection</h2></div>
+            <form id="backend-form" class="card-body">
+              <div class="field">
+                <label for="backend-name">Connection name</label
+                ><input
+                  id="backend-name"
+                  placeholder="e.g. Production uploads"
+                  required
+                  maxlength="100"
+                />
+              </div>
+              <div class="field">
+                <label for="backend-kind">Storage provider</label
+                ><select id="backend-kind">
+                  <option value="fs">Local disk / folder</option>
+                  <option value="s3">Amazon S3 / S3 compatible</option>
+                  <option value="azblob">Azure Blob Storage</option>
+                  <option value="sftp">SSH / SFTP folder</option>
+                  <option value="ftp">FTP / FTPS</option>
+                </select>
+              </div>
+              <div id="backend-fields"></div>
+              <button class="btn primary full">Add connection →</button>
+              <p class="hint">
+                Credentials use server environment variables. Use “Test” after
+                saving to verify write, read, and delete access.
+              </p>
+            </form>
+          </div>
+        </div>
+      </section>
+      <section id="projects" class="tab" hidden>
+        <div class="grid">
+          <div>
+            <div class="card">
+              <div class="card-head">
+                <h2>Your projects</h2>
+                <span id="project-count" class="count">0 projects</span>
+              </div>
+              <div id="project-list"></div>
+            </div>
+            <div class="note">
+              Each project has its own API key, file limits, and private file
+              namespace. Keys are shown once; rotating a key immediately
+              invalidates the old key.
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-head"><h2>Create a project</h2></div>
+            <form id="project-form" class="card-body">
+              <div class="field">
+                <label for="project-name">Project name</label
+                ><input
+                  id="project-name"
+                  required
+                  maxlength="100"
+                  placeholder="e.g. My application"
+                />
+              </div>
+              <div class="field">
+                <label for="project-backend">Storage connection</label
+                ><select id="project-backend" required></select>
+              </div>
+              <div class="field">
+                <label for="project-size">Maximum file size (MiB)</label
+                ><input
+                  id="project-size"
+                  type="number"
+                  min="0.001"
+                  max="10240"
+                  step="any"
+                  value="100"
+                  required
+                />
+              </div>
+              <div class="field">
+                <label for="project-types">Allowed content types</label
+                ><input
+                  id="project-types"
+                  placeholder="image/png, image/jpeg, application/pdf"
+                />
+                <p class="hint">
+                  Comma-separated exact MIME types. Leave empty to allow any
+                  type. This checks the declared type, not file contents.
+                </p>
+              </div>
+              <button class="btn primary full">Create project →</button>
+            </form>
+          </div>
+        </div>
+      </section>
+      <section id="uploads" class="tab" hidden>
+        <div class="card">
+          <div class="card-head">
+            <div>
+              <h2>Recent uploads</h2>
+              <p class="hint">Latest 100 upload requests across all projects</p>
+            </div>
+            <button id="refresh" class="btn small">↻ Refresh</button>
+          </div>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>File</th>
+                  <th>Project</th>
+                  <th>Size</th>
+                  <th>Status</th>
+                  <th>Requested</th>
+                </tr>
+              </thead>
+              <tbody id="upload-list"></tbody>
+            </table>
+          </div>
+          <div id="upload-empty" class="empty" hidden>
+            <span class="empty-icon">↥</span
+            ><strong>No uploads yet</strong>Request your first upload using the
+            API guide.
+          </div>
+        </div>
+      </section>
+      <section id="guide" class="tab" hidden>
+        <div class="card">
+          <div class="card-head">
+            <h2>Two requests. That’s it.</h2>
+            <span class="badge">REST API</span>
+          </div>
+          <div class="card-body">
+            <p class="muted">
+              Use a project API key on your server to request a URL. Send the
+              file directly to that URL from your server or browser.
+            </p>
+            <div class="steps">
+              <div>
+                <div class="step-label">
+                  <span class="step-number">1</span
+                  ><strong>Request an upload URL</strong>
+                </div>
+                <pre id="request-example"></pre>
+              </div>
+              <div>
+                <div class="step-label">
+                  <span class="step-number">2</span
+                  ><strong>Upload the raw file</strong>
+                </div>
+                <pre>
+curl -X PUT "$UPLOAD_URL" \
+  -H 'Content-Type: image/png' \
+  --data-binary @photo.png</pre
+                >
+                <p class="hint">
+                  Use upload_url from step 1. The raw body must match the
+                  declared size and content type exactly. URLs expire after 15
+                  minutes and are single-use.
+                </p>
+              </div>
+            </div>
+            <div class="note">
+              Read metadata with GET /api/files/{id}, or download with GET
+              /api/files/{id}/content. Both require the owning project’s Bearer
+              key. Uploaded files are private.
+            </div>
+            <p class="hint">
+              Uploads pass through this service to your selected storage. This
+              is an S3-style flow, not an implementation of the full S3
+              protocol. Browser clients on another origin require CORS_ORIGINS
+              on the server.
+            </p>
+          </div>
+        </div>
+      </section>
+      <div class="footer">
+        <span>Rocket Cargo · Small by design.</span><span>Rust / Axum</span>
+      </div>
+    </main>
+    <div id="notice" role="status" hidden></div>
+    <dialog id="key-dialog">
+      <div class="eyebrow">Project access</div>
+      <h2>Save your API key</h2>
+      <p class="muted">
+        This key is shown only once. Keep it on your application server.
+      </p>
+      <code id="new-key"></code>
+      <p class="hint">
+        Previously issued upload URLs remain valid until used or expired, even
+        after key rotation.
+      </p>
+      <div class="dialog-actions">
+        <button id="copy-key" class="btn">Copy key</button
+        ><button id="close-key" class="btn primary">I’ve saved it</button>
+      </div>
+    </dialog>
+  </body>
+</html>
